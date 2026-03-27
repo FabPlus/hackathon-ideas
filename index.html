@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Hackathon — Idea Tracker</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#F0F4F8;color:#1a1a2e;min-height:100vh}
+
+  /* ── BIMcollab Brand Palette ── */
+  .hdr{background:#1A2744;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .hdr-left{display:flex;align-items:center;gap:14px}
+  .hdr-logo{width:40px;height:40px;background:#2E86DE;border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .hdr-logo svg{width:22px;height:22px}
+  .hdr-title{color:#fff;font-size:20px;font-weight:700;letter-spacing:-0.3px}
+  .hdr-sub{color:#85B7EB;font-size:13px;margin-top:2px}
+  .hdr-badge{background:#2E86DE;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:0.5px}
+  .container{max-width:900px;margin:0 auto;padding:1.5rem}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+  .stat{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #D5E1EC}
+  .stat-n{font-size:26px;font-weight:700;color:#1A2744}
+  .stat-l{font-size:12px;color:#5D6D7E;margin-top:2px}
+  .tabs{display:flex;gap:0;margin-bottom:1.5rem;background:#fff;border-radius:10px;border:1px solid #D5E1EC;padding:4px;width:fit-content}
+  .tab{font-size:14px;padding:8px 20px;cursor:pointer;color:#5D6D7E;border-radius:8px;border:none;background:none;font-weight:500;transition:all 0.15s}
+  .tab.active{background:#2E86DE;color:#fff}
+  .toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1rem}
+  .filter-row{display:flex;gap:6px;flex-wrap:wrap}
+  .filter-btn{font-size:12px;padding:5px 13px;border-radius:20px;border:1px solid #D5E1EC;background:#fff;cursor:pointer;color:#5D6D7E;font-weight:500;transition:all 0.15s}
+  .filter-btn:hover{border-color:#2E86DE;color:#2E86DE}
+  .filter-btn.active{background:#2E86DE;color:#fff;border-color:#2E86DE}
+  .sort-wrap{display:flex;align-items:center;gap:8px}
+  .sort-wrap label{font-size:12px;color:#5D6D7E;white-space:nowrap}
+  .sort-wrap select{font-size:13px;padding:6px 10px;border:1px solid #D5E1EC;border-radius:8px;background:#fff;color:#1a1a2e;cursor:pointer}
+  .idea-card{background:#fff;border-radius:12px;border:1px solid #D5E1EC;padding:1rem 1.25rem;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start;transition:border-color 0.15s}
+  .idea-card:hover{border-color:#85B7EB}
+  .idea-card.top-card{border-color:#5DADE2;border-width:1.5px}
+  .vote-col{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:48px}
+  .vote-btn{width:36px;height:32px;border-radius:7px;border:1px solid #D5E1EC;background:#f8f9fb;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;padding:0}
+  .vote-btn:hover{transform:scale(1.08)}
+  .vote-btn.up:hover{background:#EBF5FB;border-color:#2E86DE}
+  .vote-btn.down:hover{background:#fef2f2;border-color:#e24b4a}
+  .vote-btn.up.active{background:#EBF5FB;border-color:#2E86DE}
+  .vote-btn.down.active{background:#fef2f2;border-color:#e24b4a}
+  .vote-count{font-size:20px;font-weight:700;color:#1A2744;line-height:1;min-width:28px;text-align:center}
+  .vote-count.positive{color:#1A2744}
+  .vote-count.negative{color:#e24b4a}
+  .vote-count.zero{color:#aab0bb}
+  .idea-body{flex:1;min-width:0}
+  .idea-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px}
+  .idea-title{font-size:15px;font-weight:700;color:#1A2744}
+  .top-badge{background:#2E86DE;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+  .idea-problem{font-size:13px;color:#4a5568;line-height:1.55;margin-bottom:8px}
+  .idea-why{font-size:12px;color:#5D6D7E;line-height:1.5;margin-bottom:8px;padding:7px 10px;background:#EBF5FB;border-radius:6px;border-left:3px solid #2E86DE}
+  .idea-prototype{font-size:12px;color:#5D6D7E;line-height:1.5;margin-bottom:8px;font-style:italic}
+  .idea-meta{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+  .pill{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600}
+  .pill-dept{background:#EBF5FB;color:#1A5276}
+  .pill-new{background:#EAF3DE;color:#3B6D11}
+  .pill-selected{background:#D6EAF8;color:#1A5276}
+  .pill-built{background:#E1F5EE;color:#0F6E56}
+  .pill-edition{background:#f1f3f5;color:#495057}
+  .idea-who{font-size:12px;color:#aab0bb;margin-left:auto}
+  .expand-btn{font-size:11px;color:#2E86DE;cursor:pointer;background:none;border:none;padding:0;margin-top:4px;text-decoration:underline}
+  .extra-info{display:none;margin-top:6px}
+  .extra-info.open{display:block}
+  .empty{text-align:center;padding:3rem 1rem;color:#aab0bb;font-size:14px;background:#fff;border-radius:12px;border:1px solid #D5E1EC}
+  .form-card{background:#fff;border-radius:12px;border:1px solid #D5E1EC;padding:1.5rem}
+  .form-section-title{font-size:13px;font-weight:700;color:#1A2744;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:1rem;padding-bottom:8px;border-bottom:2px solid #2E86DE;display:inline-block}
+  .form-row{margin-bottom:1rem}
+  .form-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .form-label{font-size:13px;color:#4a5568;margin-bottom:5px;display:block;font-weight:600}
+  .form-hint{font-size:11px;color:#aab0bb;margin-top:4px;line-height:1.4}
+  .form-required{color:#e24b4a}
+  input[type=text],select,textarea{width:100%;font-size:14px;padding:9px 12px;border:1px solid #D5E1EC;border-radius:8px;color:#1a1a2e;background:#fff;outline:none;transition:border-color 0.15s;font-family:inherit}
+  input[type=text]:focus,select:focus,textarea:focus{border-color:#2E86DE;box-shadow:0 0 0 3px rgba(46,134,222,0.12)}
+  textarea{min-height:80px;resize:vertical;line-height:1.5}
+  .char-count{font-size:11px;color:#aab0bb;text-align:right;margin-top:2px}
+  .submit-btn{background:#2E86DE;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:15px;font-weight:700;cursor:pointer;width:100%;margin-top:8px;letter-spacing:0.3px;transition:opacity 0.15s}
+  .submit-btn:hover{opacity:0.9}
+  .submit-btn:active{transform:scale(0.99)}
+  .alert{border-radius:8px;padding:12px 16px;margin-bottom:1rem;font-size:13px;display:none;line-height:1.5}
+  .alert-success{background:#E1F5EE;border:1px solid #9FE1CB;color:#0F6E56}
+  .alert-error{background:#FCEBEB;border:1px solid #F7C1C1;color:#A32D2D}
+  .rank{font-size:11px;color:#aab0bb;font-weight:700;min-width:20px}
+  @media(max-width:600px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .form-2col{grid-template-columns:1fr}
+    .hdr{padding:1rem}
+    .container{padding:1rem}
+    .idea-who{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo">
+      <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11 2L14.5 8.5H19L15 13L17 19L11 15.5L5 19L7 13L3 8.5H7.5L11 2Z" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <div class="hdr-title">AI Hackathon — Idea Tracker</div>
+      <div class="hdr-sub">Submit ideas · Vote for the best · Build it together</div>
+    </div>
+  </div>
+  <div class="hdr-badge">BIMcollab / Kubus</div>
+</div>
+
+<div class="container">
+  <div class="stats" id="statsRow">
+    <div class="stat"><div class="stat-n">0</div><div class="stat-l">Ideas submitted</div></div>
+    <div class="stat"><div class="stat-n">0</div><div class="stat-l">Total votes cast</div></div>
+    <div class="stat"><div class="stat-n">0</div><div class="stat-l">Departments</div></div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('board')">Idea board</button>
+    <button class="tab" onclick="switchTab('submit')">Submit an idea</button>
+  </div>
+  
+  <div id="tab-board">
+    <div class="toolbar">
+      <div class="filter-row" id="filterRow"></div>
+      <div class="sort-wrap">
+        <label>Sort by</label>
+        <select id="sortSelect" onchange="renderBoard()">
+          <option value="votes">Top voted</option>
+          <option value="newest">Newest first</option>
+          <option value="dept">By department</option>
+        </select>
+      </div>
+    </div>
+    <div id="ideaList">
+      <div class="empty">Loading ideas...</div>
+    </div>
+  </div>
+
+  <div id="tab-submit" style="display:none">
+    <div class="alert alert-success" id="successAlert">Your idea has been submitted! Head to the board to see it and collect votes.</div>
+    <div class="alert alert-error" id="errorAlert"></div>
+    <div class="form-card">
+      <div class="form-section-title">About you</div>
+      <div class="form-2col" style="margin-bottom:1rem">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Your name <span class="form-required">*</span></label>
+          <input type="text" id="f-name" placeholder="e.g. Marsel Verheijde" maxlength="60">
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label">Your department <span class="form-required">*</span></label>
+          <select id="f-dept">
+            <option value="">Select your department...</option>
+            <option>Sales</option><option>Marketing</option><option>Service</option>
+            <option>Product</option><option>Engineering</option><option>Operations</option>
+            <option>HR</option><option>Finance</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-section-title" style="margin-top:1.25rem">Your idea</div>
+      <div class="form-row">
+        <label class="form-label">Idea title <span class="form-required">*</span></label>
+        <input type="text" id="f-title" placeholder="e.g. Auto-draft CRM follow-up emails" maxlength="80" oninput="countChars('f-title','tc-title',80)">
+        <div class="char-count" id="tc-title">0 / 80</div>
+        <div class="form-hint">Short and specific — what would you google if this tool existed?</div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">The problem it solves <span class="form-required">*</span></label>
+        <textarea id="f-problem" placeholder="What is slow, painful, or repetitive right now? Give one real example from your working week." maxlength="400" oninput="countChars('f-problem','tc-problem',400)"></textarea>
+        <div class="char-count" id="tc-problem">0 / 400</div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Why it matters</label>
+        <textarea id="f-why" placeholder="What would change if this existed? Time saved, fewer errors, better quality — be specific if you can." style="min-height:64px" maxlength="300" oninput="countChars('f-why','tc-why',300)"></textarea>
+        <div class="char-count" id="tc-why">0 / 300</div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">What a good prototype looks like</label>
+        <input type="text" id="f-prototype" placeholder="e.g. A ChatGPT prompt that drafts a follow-up from pasted CRM notes in under 30 seconds" maxlength="160" oninput="countChars('f-prototype','tc-proto',160)">
+        <div class="char-count" id="tc-proto">0 / 160</div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Which hackathon edition?</label>
+        <select id="f-edition">
+          <option>Hackathon #1</option><option>Hackathon #2</option>
+          <option>Hackathon #3</option><option>Any edition</option>
+        </select>
+      </div>
+      <button class="submit-btn" id="submitBtn" onclick="submitIdea()">Submit my idea</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDKs (v11 Modular) -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+  // =====================================================================
+  // 🔴 YOUR LIVE FIREBASE CONFIGURATION:
+  // =====================================================================
+  const firebaseConfig = {
+    apiKey: "AIzaSyBTtHAUXZOzrf_O6Gi2hGbqlvWRX2EyPVo",
+    authDomain: "ai-hackathon-pizza.firebaseapp.com",
+    projectId: "ai-hackathon-pizza",
+    storageBucket: "ai-hackathon-pizza.firebasestorage.app",
+    messagingSenderId: "903148407211",
+    appId: "1:903148407211:web:94029d4643b8238193eaee",
+    measurementId: "G-2HMQP69E82"
+  };
+  
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  // App State
+  let ideas = [];
+  let myVotes = JSON.parse(localStorage.getItem('bimcollab_my_votes') || '{}');
+  let activeFilter = "All";
+  let expandedIds = new Set();
+
+  // 1. Authenticate before executing queries (Required for Firestore test mode / security)
+  const initAuth = async () => {
+    try {
+      await signInAnonymously(auth);
+    } catch (e) {
+      console.error("Auth error:", e);
+    }
+  };
+
+  initAuth();
+
+  // 2. Wait for successful Auth, then load data
+  onAuthStateChanged(auth, (user) => {
+    if (!user) return; // Wait until authed
+
+    // Listen for Real-Time Updates
+    onSnapshot(collection(db, "ideas"), (snapshot) => {
+      ideas = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      updateStats();
+      window.renderBoard();
+    }, (error) => {
+      console.error("Firestore error:", error);
+      showAlert('errorAlert', 'Could not connect to database. Check console for details.');
+    });
+  });
+
+  // 3. Submit Idea to Firestore
+  window.submitIdea = async function() {
+    const name      = document.getElementById('f-name').value.trim();
+    const dept      = document.getElementById('f-dept').value;
+    const title     = document.getElementById('f-title').value.trim();
+    const problem   = document.getElementById('f-problem').value.trim();
+    const why       = document.getElementById('f-why').value.trim();
+    const prototype = document.getElementById('f-prototype').value.trim();
+    const edition   = document.getElementById('f-edition').value;
+
+    if (!name)    { showAlert('errorAlert','Please enter your name.'); return; }
+    if (!dept)    { showAlert('errorAlert','Please select your department.'); return; }
+    if (!title)   { showAlert('errorAlert','Please give your idea a title.'); return; }
+    if (!problem) { showAlert('errorAlert','Please describe the problem your idea solves.'); return; }
+
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = "Submitting...";
+    btn.disabled = true;
+
+    try {
+      await addDoc(collection(db, "ideas"), {
+        name, dept, edition, title, problem, why, prototype,
+        netVotes: 0, status: 'new', ts: Date.now()
+      });
+
+      // Clear Form
+      ['f-name','f-title','f-problem','f-why','f-prototype'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('f-dept').value = '';
+      ['tc-title','tc-problem','tc-why','tc-proto'].forEach(id => document.getElementById(id).textContent = '0 / ' + document.getElementById(id).textContent.split('/')[1].trim());
+
+      showAlert('successAlert');
+      setTimeout(() => window.switchTab('board'), 1200);
+    } catch (e) {
+      console.error(e);
+      showAlert('errorAlert', 'Failed to submit idea. Check console or database rules.');
+    } finally {
+      btn.textContent = "Submit my idea";
+      btn.disabled = false;
+    }
+  }
+
+  // 4. Vote and Update Firestore
+  window.castVote = async function(id, dir) {
+    const currentVote = myVotes[id] || null;
+    let voteChange = 0;
+
+    if (currentVote === dir) {
+      // Removing vote
+      voteChange = dir === 'up' ? -1 : 1;
+      delete myVotes[id];
+    } else {
+      // Changing vote or new vote
+      if (currentVote === 'up' && dir === 'down') voteChange = -2;
+      else if (currentVote === 'down' && dir === 'up') voteChange = 2;
+      else voteChange = dir === 'up' ? 1 : -1;
+      myVotes[id] = dir;
+    }
+
+    // Save to local storage so the browser remembers this user's buttons
+    localStorage.setItem('bimcollab_my_votes', JSON.stringify(myVotes));
+    
+    // Update Firebase with the increment/decrement
+    try {
+      const ideaRef = doc(db, "ideas", id);
+      await updateDoc(ideaRef, {
+        netVotes: increment(voteChange)
+      });
+    } catch(e) {
+      console.error("Vote update failed:", e);
+    }
+  }
+
+  // --- UI Functions (Attached to window so HTML buttons can see them) ---
+
+  function updateStats() {
+    const total = ideas.length;
+    const totalVotes = ideas.reduce((s,i) => s + (i.netVotes || 0), 0);
+    const depts = new Set(ideas.map(i => i.dept)).size;
+    document.getElementById('statsRow').innerHTML = `
+      <div class="stat"><div class="stat-n">${total}</div><div class="stat-l">Ideas submitted</div></div>
+      <div class="stat"><div class="stat-n">${totalVotes}</div><div class="stat-l">Total community votes</div></div>
+      <div class="stat"><div class="stat-n">${depts}</div><div class="stat-l">Departments</div></div>`;
+  }
+
+  window.renderBoard = function() {
+    // Build Filters
+    const depts = ["All", ...new Set(ideas.map(i => i.dept))];
+    document.getElementById('filterRow').innerHTML = depts.map(d =>
+      `<button class="filter-btn${d === activeFilter ? ' active' : ''}" onclick="setFilter('${d}')">${d}</button>`
+    ).join('');
+
+    const sort = document.getElementById('sortSelect').value;
+    let list = [...ideas].filter(i => activeFilter === 'All' || i.dept === activeFilter);
+
+    if (sort === 'votes')   list.sort((a,b) => (b.netVotes||0) - (a.netVotes||0));
+    else if (sort === 'newest') list.sort((a,b) => b.ts - a.ts);
+    else list.sort((a,b) => a.dept.localeCompare(b.dept));
+
+    const topNet = list.length ? Math.max(...list.map(i => i.netVotes||0)) : 0;
+    const el = document.getElementById('ideaList');
+
+    if (!list.length) {
+      el.innerHTML = '<div class="empty">No ideas here yet — be the first to submit one!</div>';
+      return;
+    }
+
+    el.innerHTML = list.map((idea, idx) => {
+      const net = idea.netVotes || 0;
+      const isTop = net === topNet && topNet > 0 && sort === 'votes';
+      const myVote = myVotes[idea.id] || null;
+      const countClass = net > 0 ? 'positive' : net < 0 ? 'negative' : 'zero';
+      const expanded = expandedIds.has(idea.id);
+      const hasExtra = idea.why || idea.prototype;
+
+      return `<div class="idea-card${isTop ? ' top-card' : ''}" id="card-${idea.id}">
+        <div class="vote-col">
+          <button class="vote-btn up${myVote === 'up' ? ' active' : ''}" onclick="castVote('${idea.id}','up')" title="Upvote">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 2L12 9H2L7 2Z" fill="${myVote === 'up' ? '#2E86DE' : '#aab0bb'}"/>
+            </svg>
+          </button>
+          <div class="vote-count ${countClass}">${net > 0 ? '+' : ''}${net}</div>
+          <button class="vote-btn down${myVote === 'down' ? ' active' : ''}" onclick="castVote('${idea.id}','down')" title="Downvote">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 12L2 5H12L7 12Z" fill="${myVote === 'down' ? '#e24b4a' : '#aab0bb'}"/>
+            </svg>
+          </button>
+        </div>
+        <div class="idea-body">
+          <div class="idea-title-row">
+            ${sort === 'votes' ? `<span class="rank">#${idx+1}</span>` : ''}
+            <span class="idea-title">${idea.title}</span>
+            ${isTop ? '<span class="top-badge">Top idea</span>' : ''}
+          </div>
+          <div class="idea-problem">${idea.problem}</div>
+          ${hasExtra ? `
+          <div class="extra-info${expanded ? ' open' : ''}">
+            ${idea.why ? `<div class="idea-why">${idea.why}</div>` : ''}
+            ${idea.prototype ? `<div class="idea-prototype">Prototype: ${idea.prototype}</div>` : ''}
+          </div>
+          <button class="expand-btn" onclick="toggleExpand('${idea.id}')">${expanded ? 'Show less' : 'Show why it matters + prototype'}</button>` : ''}
+          <div class="idea-meta" style="margin-top:8px">
+            <span class="pill pill-dept">${idea.dept}</span>
+            ${statusPill(idea.status)}
+            <span class="pill pill-edition">${idea.edition}</span>
+            <span class="idea-who">— ${idea.name}</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  window.setFilter = function(d) { activeFilter = d; window.renderBoard(); }
+  window.toggleExpand = function(id) {
+    if (expandedIds.has(id)) expandedIds.delete(id);
+    else expandedIds.add(id);
+    window.renderBoard();
+  }
+  
+  window.switchTab = function(t) {
+    document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('active', ['board','submit'][i] === t));
+    document.getElementById('tab-board').style.display   = t === 'board'  ? 'block' : 'none';
+    document.getElementById('tab-submit').style.display  = t === 'submit' ? 'block' : 'none';
+    if (t === 'board') window.renderBoard();
+  }
+
+  window.countChars = function(inputId, counterId, max) {
+    const len = document.getElementById(inputId).value.length;
+    document.getElementById(counterId).textContent = `${len} / ${max}`;
+  }
+
+  function showAlert(id, msg) {
+    const el = document.getElementById(id);
+    if (msg) el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 5000);
+  }
+
+  function statusPill(status) {
+    if (status === 'selected') return '<span class="pill pill-selected">Selected for hackathon</span>';
+    if (status === 'built')    return '<span class="pill pill-built">Built!</span>';
+    return '<span class="pill pill-new">New idea</span>';
+  }
+
+</script>
+</body>
+</html>
