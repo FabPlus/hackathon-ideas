@@ -121,7 +121,11 @@
   .join-btn { font-size: 14px; padding: 14px 22px; border-radius: var(--radius-md); border: 1px solid var(--color-border-subtle); background: var(--color-white); cursor: pointer; color: var(--color-primary-navy); font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px; font-family: inherit; }
   .join-btn:hover { background: var(--color-off-white); border-color: var(--color-mid-gray); }
   .join-btn.joined { background: var(--color-primary-navy); border-color: var(--color-primary-navy); color: var(--color-white); }
-  .delete-btn { font-size: 14px; color: #DC2626; cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; text-underline-offset: 4px; margin-left: var(--space-md); font-weight: 500; font-family: inherit; }
+  
+  /* Edit & Delete Buttons */
+  .edit-btn { font-size: 14px; color: var(--color-text-secondary); cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; text-underline-offset: 4px; margin-left: auto; font-weight: 500; font-family: inherit; transition: color 0.2s; }
+  .edit-btn:hover { color: var(--color-primary-navy); }
+  .delete-btn { font-size: 14px; color: #DC2626; cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; text-underline-offset: 4px; font-weight: 500; font-family: inherit; }
 
   .empty { text-align: center; padding: var(--space-3xl) var(--space-md); color: var(--color-text-secondary); font-size: 16px; background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border-subtle); }
 
@@ -176,17 +180,13 @@
   <div class="login-box">
     <div class="hdr-logo" style="margin: 0 auto var(--space-lg) auto;">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Main pizza missing a slice (Navy colored) -->
         <path d="M11 3 a9 9 0 1 0 9 9 h-9 V3 z" fill="#0F2F5F"/>
-        <!-- Pepperonis on main pizza (White colored) -->
         <circle cx="7" cy="9" r="1.5" fill="white"/>
         <circle cx="13" cy="17" r="1.5" fill="white"/>
         <circle cx="6" cy="15" r="1.2" fill="white"/>
         <circle cx="15" cy="14" r="1.2" fill="white"/>
         <circle cx="10" cy="13" r="1" fill="white"/>
-        <!-- Sliced piece pulled away -->
         <path d="M13 10.5 L13 1.5 A9 9 0 0 1 22 10.5 Z" fill="#0F2F5F"/>
-        <!-- Pepperoni on slice -->
         <circle cx="16.5" cy="5.5" r="1.2" fill="white"/>
       </svg>
     </div>
@@ -203,17 +203,13 @@
   <div class="hdr-left">
     <div class="hdr-logo">
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Main pizza missing a slice -->
         <path d="M11 3 a9 9 0 1 0 9 9 h-9 V3 z" fill="#0F2F5F"/>
-        <!-- Pepperonis on main pizza -->
         <circle cx="7" cy="9" r="1.5" fill="white"/>
         <circle cx="13" cy="17" r="1.5" fill="white"/>
         <circle cx="6" cy="15" r="1.2" fill="white"/>
         <circle cx="15" cy="14" r="1.2" fill="white"/>
         <circle cx="10" cy="13" r="1" fill="white"/>
-        <!-- Sliced piece pulled away -->
         <path d="M13 10.5 L13 1.5 A9 9 0 0 1 22 10.5 Z" fill="#0F2F5F"/>
-        <!-- Pepperoni on slice -->
         <circle cx="16.5" cy="5.5" r="1.2" fill="white"/>
       </svg>
     </div>
@@ -234,7 +230,7 @@
   
   <div class="tabs">
     <button class="tab active" onclick="switchTab('board')">Idea board</button>
-    <button class="tab" onclick="switchTab('submit')">Submit an idea</button>
+    <button class="tab" onclick="openSubmitTab()">Submit an idea</button>
   </div>
   
   <div id="tab-board">
@@ -348,6 +344,7 @@
   let activeFilter = "All";
   let searchQuery = "";
   let expandedIds = new Set();
+  let editingIdeaId = null; // Tracks if the user is currently editing an idea
   
   // Admin Mode: check if ?admin=true is in the URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -358,14 +355,14 @@
   if (savedUser.name) document.getElementById('f-name').value = savedUser.name;
   if (savedUser.dept) document.getElementById('f-dept').value = savedUser.dept;
 
-  // SHARED TEAM PASSWORD (Change this to whatever you want)
+  // SHARED TEAM PASSWORD
   const TEAM_PASSWORD = "pizza"; 
 
   // --- LOGIN LOGIC ---
   window.checkPassword = function() {
     const input = document.getElementById('secret-password').value;
     if (input === TEAM_PASSWORD) {
-      sessionStorage.setItem('bimcollab_auth', 'true'); // Resets if browser is fully closed
+      sessionStorage.setItem('bimcollab_auth', 'true');
       startApp();
     } else {
       document.getElementById('login-error').style.display = 'block';
@@ -376,15 +373,13 @@
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app-content').style.display = 'block';
     
-    // 1. Authenticate before executing queries
     const initAuth = async () => {
       try { await signInAnonymously(auth); } catch (e) { console.error("Auth error:", e); }
     };
     initAuth();
 
-    // 2. Wait for successful Auth, then load data
     onAuthStateChanged(auth, (user) => {
-      if (!user) return; // Wait until authed
+      if (!user) return; 
 
       onSnapshot(collection(db, "ideas"), (snapshot) => {
         ideas = snapshot.docs.map(doc => ({
@@ -400,12 +395,10 @@
     });
   }
 
-  // Check if already logged in this session
   if (sessionStorage.getItem('bimcollab_auth') === 'true') {
     startApp();
   }
 
-  // Improvement 3: Relative Timestamps
   function timeAgo(ts) {
     if (!ts) return '';
     const seconds = Math.floor((Date.now() - ts) / 1000);
@@ -418,7 +411,50 @@
     return `${days}d ago`;
   }
 
-  // Submit Idea to Firestore
+  // Edit logic
+  window.openSubmitTab = function() {
+    window.clearForm();
+    window.switchTab('submit');
+  }
+
+  window.clearForm = function() {
+    editingIdeaId = null;
+    ['f-title','f-problem','f-why','f-prototype'].forEach(id => document.getElementById(id).value = '');
+    ['tc-title','tc-problem','tc-why','tc-proto'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '0 / ' + el.textContent.split('/')[1].trim();
+    });
+    document.getElementById('submitBtn').textContent = "Submit my idea";
+    const sectionTitles = document.querySelectorAll('.form-section-title');
+    if (sectionTitles.length > 1) sectionTitles[1].textContent = "Your idea";
+  }
+
+  window.editIdea = function(id) {
+    const idea = ideas.find(i => i.id === id);
+    if (!idea || !auth.currentUser || idea.authorUid !== auth.currentUser.uid) return;
+
+    if (idea.name) document.getElementById('f-name').value = idea.name;
+    if (idea.dept) document.getElementById('f-dept').value = idea.dept;
+    document.getElementById('f-title').value = idea.title || '';
+    document.getElementById('f-problem').value = idea.problem || '';
+    document.getElementById('f-why').value = idea.why || '';
+    document.getElementById('f-prototype').value = idea.prototype || '';
+    document.getElementById('f-edition').value = idea.edition || 'Any edition';
+
+    window.countChars('f-title', 'tc-title', 80);
+    window.countChars('f-problem', 'tc-problem', 400);
+    window.countChars('f-why', 'tc-why', 300);
+    window.countChars('f-prototype', 'tc-proto', 160);
+
+    editingIdeaId = id;
+    document.getElementById('submitBtn').textContent = "Save Changes";
+    const sectionTitles = document.querySelectorAll('.form-section-title');
+    if (sectionTitles.length > 1) sectionTitles[1].textContent = "Edit your idea";
+    
+    window.switchTab('submit');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   window.submitIdea = async function() {
     const name      = document.getElementById('f-name').value.trim();
     const dept      = document.getElementById('f-dept').value;
@@ -434,33 +470,38 @@
     if (!problem) { showAlert('errorAlert','Please describe the problem your idea solves.'); return; }
 
     const btn = document.getElementById('submitBtn');
-    btn.textContent = "Submitting...";
+    btn.textContent = editingIdeaId ? "Saving..." : "Submitting...";
     btn.disabled = true;
 
-    // Save user details for next time (Improvement 1)
     localStorage.setItem('bimcollab_user', JSON.stringify({ name, dept }));
 
     try {
-      await addDoc(collection(db, "ideas"), {
-        name, dept, edition, title, problem, why, prototype,
-        authorUid: auth.currentUser.uid, // Tie idea to this user (Improvement 6)
-        joinedUsers: [],                 // Array to track who joins (Improvement 5)
-        netVotes: 0, 
-        status: 'new', 
-        ts: Date.now()
-      });
+      if (editingIdeaId) {
+        await updateDoc(doc(db, "ideas", editingIdeaId), {
+          name, dept, edition, title, problem, why, prototype
+        });
+        showAlert('successAlert', 'Your idea has been updated successfully!');
+      } else {
+        await addDoc(collection(db, "ideas"), {
+          name, dept, edition, title, problem, why, prototype,
+          authorUid: auth.currentUser.uid,
+          joinedUsers: [],
+          netVotes: 0, 
+          status: 'new', 
+          ts: Date.now()
+        });
+        showAlert('successAlert', 'Your idea has been submitted! Head to the board to see it and collect votes.');
+      }
 
-      // Clear Form (except remembered fields)
-      ['f-title','f-problem','f-why','f-prototype'].forEach(id => document.getElementById(id).value = '');
-      ['tc-title','tc-problem','tc-why','tc-proto'].forEach(id => document.getElementById(id).textContent = '0 / ' + document.getElementById(id).textContent.split('/')[1].trim());
-
-      showAlert('successAlert');
-      setTimeout(() => window.switchTab('board'), 1200);
+      setTimeout(() => {
+        window.clearForm();
+        window.switchTab('board');
+      }, 1200);
     } catch (e) {
       console.error(e);
-      showAlert('errorAlert', 'Failed to submit idea.');
+      showAlert('errorAlert', 'Failed to save idea. Please try again.');
+      btn.textContent = editingIdeaId ? "Save Changes" : "Submit my idea";
     } finally {
-      btn.textContent = "Submit my idea";
       btn.disabled = false;
     }
   }
@@ -537,7 +578,6 @@
   }
 
   window.renderBoard = function() {
-    // Build Filters
     const depts = ["All", ...new Set(ideas.map(i => i.dept))];
     document.getElementById('filterRow').innerHTML = depts.map(d =>
       `<button class="filter-btn${d === activeFilter ? ' active' : ''}" onclick="setFilter('${d}')">${d}</button>`
@@ -545,7 +585,6 @@
 
     const sort = document.getElementById('sortSelect').value;
     
-    // Filter by Department and Search Query
     let list = [...ideas].filter(i => {
       const matchDept = activeFilter === 'All' || i.dept === activeFilter;
       const matchSearch = !searchQuery || 
@@ -576,10 +615,8 @@
       const expanded = expandedIds.has(idea.id);
       const hasExtra = idea.why || idea.prototype;
       
-      // Ownership check (Improvement 6)
       const isOwner = currentUid && idea.authorUid === currentUid;
       
-      // Join Logic (Improvement 5)
       const joinedList = idea.joinedUsers || [];
       const joinCount = joinedList.length;
       const iHaveJoined = currentUid && joinedList.includes(currentUid);
@@ -607,7 +644,10 @@
             <button class="join-btn ${iHaveJoined ? 'joined' : ''}" onclick="toggleJoin('${idea.id}')">
               🤝 ${iHaveJoined ? 'Joined' : 'Join team'} ${joinCount > 0 ? `(${joinCount})` : ''}
             </button>
-            ${isOwner ? `<button class="delete-btn" onclick="deleteIdea('${idea.id}')">Delete my idea</button>` : ''}
+            ${isOwner ? `
+              <button class="edit-btn" onclick="editIdea('${idea.id}')">Edit</button>
+              <button class="delete-btn" onclick="deleteIdea('${idea.id}')">Delete</button>
+            ` : ''}
           </div>
 
           ${hasExtra ? `
@@ -630,7 +670,6 @@
     }).join('');
   }
 
-  // Helpers
   function adminStatusDropdown(id, currentStatus) {
     const statuses = ['new', 'selected', 'built'];
     const labels = { 'new': 'New idea', 'selected': 'Selected', 'built': 'Built!' };
