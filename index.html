@@ -56,27 +56,34 @@
   .stat-n { font-size: 32px; font-weight: 700; color: var(--color-text-primary); line-height: 1.15; }
   .stat-l { font-size: 14px; color: var(--color-text-secondary); margin-top: var(--space-xs); font-weight: 500; }
 
-  /* Tabs */
-  .tabs { display: flex; gap: var(--space-xs); margin-bottom: var(--space-xl); background: var(--color-white); border-radius: var(--radius-md); border: 1px solid var(--color-border-subtle); padding: 6px; width: fit-content; }
-  .tab { font-size: 14px; padding: 10px 24px; cursor: pointer; color: var(--color-text-secondary); border-radius: var(--radius-sm); border: none; background: none; font-weight: 600; transition: all 0.2s; font-family: inherit; }
-  .tab:hover { color: var(--color-text-primary); }
+  /* High Conversion Navigation Logic */
+  .nav-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-xl); }
+  
+  /* Tabs (View Switcher) */
+  .tabs { display: flex; gap: 6px; background: var(--color-white); border-radius: var(--radius-md); border: 1px solid var(--color-border-subtle); padding: 6px; width: fit-content; box-shadow: var(--shadow-soft); }
+  .tab { display: flex; align-items: center; gap: 8px; font-size: 14px; padding: 10px 20px; cursor: pointer; color: var(--color-text-secondary); border-radius: 6px; border: none; background: transparent; font-weight: 600; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit; }
+  .tab svg { flex-shrink: 0; transition: transform 0.2s; }
+  .tab:hover { background: var(--color-off-white); color: var(--color-primary-navy); }
+  .tab:hover svg { transform: scale(1.1); }
   .tab.active { background: var(--color-primary-navy); color: var(--color-white); }
+  
+  /* Primary Action Button */
+  .nav-submit-btn { display: flex; align-items: center; gap: 8px; background: var(--color-primary-navy); color: var(--color-white); border: none; border-radius: var(--radius-md); padding: 12px 24px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-family: inherit; box-shadow: 0 4px 12px rgba(15, 47, 95, 0.15); }
+  .nav-submit-btn:hover { background: var(--color-primary-navy-hover); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15, 47, 95, 0.25); }
+  .nav-submit-btn svg { width: 18px; height: 18px; stroke-width: 2.5; }
 
   /* Toolbar */
-  .toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-lg); }
-  .filter-row { display: flex; gap: var(--space-sm); flex-wrap: wrap; flex: 1; }
-  .filter-btn { font-size: 14px; padding: 8px 16px; border-radius: 20px; border: 1px solid var(--color-border-subtle); background: var(--color-white); cursor: pointer; color: var(--color-text-secondary); font-weight: 600; transition: all 0.2s; font-family: inherit; }
-  .filter-btn:hover { border-color: var(--color-mid-gray); color: var(--color-text-primary); }
-  .filter-btn.active { background: var(--color-primary-navy); color: var(--color-white); border-color: var(--color-primary-navy); }
-
-  .controls-wrap { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
-  .search-input { font-size: 14px; padding: 10px 16px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--color-white); outline: none; width: 220px; color: var(--color-text-primary); font-family: inherit; transition: border-color 0.2s; }
-  .search-input::placeholder { color: var(--color-text-secondary); }
-  .search-input:focus { border-color: var(--color-primary-navy); }
+  .toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-md); margin-bottom: var(--space-lg); background: var(--color-white); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-md); border: 1px solid var(--color-border-subtle); }
+  .search-wrap { flex: 1; min-width: 200px; display: flex; align-items: center; position: relative; }
+  .search-wrap svg { position: absolute; left: 12px; width: 16px; height: 16px; color: var(--color-mid-gray); pointer-events: none; }
+  .search-input { font-size: 14px; padding: 10px 16px 10px 36px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--color-off-white); outline: none; width: 100%; color: var(--color-text-primary); font-family: inherit; transition: all 0.2s; }
+  .search-input:focus { border-color: var(--color-primary-navy); background: var(--color-white); box-shadow: 0 0 0 1px var(--color-primary-navy); }
   
-  .sort-wrap { display: flex; align-items: center; gap: var(--space-sm); }
-  .sort-wrap label { font-size: 14px; color: var(--color-text-secondary); font-weight: 500; }
-  .sort-wrap select { font-size: 14px; padding: 10px 12px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--color-white); color: var(--color-text-primary); cursor: pointer; outline: none; font-family: inherit; font-weight: 500; }
+  .controls-wrap { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
+  .control-group { display: flex; align-items: center; gap: var(--space-sm); }
+  .control-group label { font-size: 13px; color: var(--color-text-secondary); font-weight: 500; }
+  .control-group select { font-size: 14px; padding: 8px 32px 8px 12px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--color-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235F6B7A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 8px center; -webkit-appearance: none; appearance: none; color: var(--color-text-primary); cursor: pointer; outline: none; font-family: inherit; font-weight: 500; }
+  .control-group select:focus { border-color: var(--color-primary-navy); }
 
   /* Cards */
   .idea-card { background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border-subtle); padding: var(--space-lg); margin-bottom: var(--space-md); display: flex; gap: var(--space-lg); align-items: flex-start; transition: all 0.2s; position: relative; }
@@ -84,80 +91,112 @@
   .idea-card.top-card { border: 2px solid var(--color-primary-navy); }
 
   .vote-col { display: flex; flex-direction: column; align-items: center; gap: var(--space-xs); min-width: 48px; }
-  .vote-btn { width: 40px; height: 36px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle); background: var(--color-off-white); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; padding: 0; }
+  .vote-btn { width: 44px; height: 40px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle); background: var(--color-off-white); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; padding: 0; }
   .vote-btn:hover { background: var(--color-light-gray); border-color: var(--color-mid-gray); }
   .vote-btn.up.active { background: var(--color-primary-navy); border-color: var(--color-primary-navy); }
   .vote-btn.down.active { background: #FEE2E2; border-color: #EF4444; }
   .vote-count { font-size: 20px; font-weight: 700; color: var(--color-text-primary); line-height: 1.2; min-width: 32px; text-align: center; margin: 4px 0; }
-  .vote-count.positive { color: var(--color-text-primary); }
-  .vote-count.negative { color: #DC2626; }
-  .vote-count.zero { color: var(--color-mid-gray); }
 
   .idea-body { flex: 1; min-width: 0; }
-  .idea-title-row { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; margin-bottom: var(--space-sm); }
+  .idea-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-md); margin-bottom: var(--space-sm); cursor: pointer; }
+  .title-left { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
   .idea-title { font-size: 20px; font-weight: 700; color: var(--color-text-primary); line-height: 1.3; }
-  .top-badge { background: var(--color-primary-navy); color: var(--color-white); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .top-badge { background: var(--color-primary-navy); color: var(--color-white); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .expand-chevron { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--color-off-white); color: var(--color-text-secondary); transition: transform 0.3s, background 0.2s; flex-shrink: 0; }
+  .idea-card:hover .expand-chevron { background: var(--color-light-gray); color: var(--color-text-primary); }
+  .expand-chevron.open { transform: rotate(180deg); }
 
   .idea-problem { font-size: 16px; color: var(--color-dark-gray); line-height: 1.6; margin-bottom: var(--space-md); }
   
-  .extra-info { display: none; margin-top: var(--space-sm); padding-top: var(--space-md); border-top: 1px solid var(--color-border-subtle); }
-  .extra-info.open { display: block; }
+  .extra-info { max-height: 0; overflow: hidden; opacity: 0; transition: all 0.3s ease-in-out; }
+  .extra-info.open { max-height: 1000px; opacity: 1; margin-top: var(--space-sm); padding-top: var(--space-md); border-top: 1px solid var(--color-border-subtle); margin-bottom: var(--space-md); }
+  
   .idea-why { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: var(--space-md); padding: var(--space-md); background: var(--color-off-white); border-radius: var(--radius-md); border-left: 4px solid var(--color-primary-navy); }
-  .idea-prototype { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: var(--space-md); }
+  .info-group { margin-bottom: var(--space-sm); font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+  .info-group strong { color: var(--color-text-primary); display: block; font-size: 13px; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-  .idea-meta { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; margin-top: var(--space-md); }
-  .pill { font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: 600; border: 1px solid var(--color-border-subtle); background: var(--color-white); color: var(--color-text-secondary); }
+  .idea-meta { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--color-border-subtle); }
+  
+  /* Pipeline Pills */
+  .pill { font-size: 12px; padding: 4px 10px; border-radius: 20px; font-weight: 600; border: 1px solid var(--color-border-subtle); background: var(--color-white); color: var(--color-text-secondary); display: inline-flex; align-items: center; gap: 4px; }
   .pill-dept { background: var(--color-light-gray); color: var(--color-text-primary); border-color: transparent; }
-  .pill-selected { background: #E6F4EA; color: #1E4620; border-color: #CEEAD6; }
+  .pill-new { background: #EAF3DE; color: #3B6D11; border-color: #D3E7C1; }
+  .pill-selected { background: #EBF5FB; color: #1A5276; border-color: #D6EAF8; }
   .pill-built { background: var(--color-primary-navy); color: var(--color-white); border-color: var(--color-primary-navy); }
+  .pill-evaluated { background: #FFF7ED; color: #C2410C; border-color: #FFEDD5; }
+  .pill-production { background: #059669; color: var(--color-white); border-color: #059669; }
   
   .admin-select { font-size: 12px; padding: 4px 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle); background: var(--color-white); font-weight: 600; outline: none; color: var(--color-text-primary); font-family: inherit; }
+  .admin-owner-input { font-size: 12px; padding: 4px 8px; border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle); background: var(--color-white); outline: none; color: var(--color-text-primary); font-family: inherit; width: 140px; margin-left: var(--space-xs); }
   
-  .idea-who { font-size: 14px; color: var(--color-text-secondary); margin-left: auto; display: flex; gap: var(--space-sm); align-items: center; }
+  .owner-badge { font-size: 13px; color: var(--color-primary-navy); font-weight: 600; display: flex; align-items: center; gap: 6px; background: var(--color-off-white); padding: 6px 12px; border-radius: var(--radius-md); border: 1px solid var(--color-border-subtle); }
+
+  .idea-who { font-size: 13px; color: var(--color-text-secondary); margin-left: auto; display: flex; gap: var(--space-sm); align-items: center; }
   .time-ago { font-size: 12px; color: var(--color-mid-gray); }
 
-  .action-buttons { display: flex; gap: var(--space-md); align-items: center; margin-top: var(--space-md); }
-  .expand-btn { font-size: 14px; color: var(--color-primary-navy); cursor: pointer; background: none; border: none; padding: 0; font-weight: 600; font-family: inherit; text-decoration: underline; text-underline-offset: 4px; }
-  .join-btn { font-size: 14px; padding: 14px 22px; border-radius: var(--radius-md); border: 1px solid var(--color-border-subtle); background: var(--color-white); cursor: pointer; color: var(--color-primary-navy); font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px; font-family: inherit; }
+  .action-buttons { display: flex; gap: var(--space-md); align-items: center; margin-top: var(--space-md); flex-wrap: wrap; }
+  .join-btn { font-size: 14px; padding: 10px 18px; border-radius: var(--radius-md); border: 1px solid var(--color-border-subtle); background: var(--color-white); cursor: pointer; color: var(--color-primary-navy); font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 8px; font-family: inherit; box-shadow: var(--shadow-soft); }
   .join-btn:hover { background: var(--color-off-white); border-color: var(--color-mid-gray); }
   .join-btn.joined { background: var(--color-primary-navy); border-color: var(--color-primary-navy); color: var(--color-white); }
   
-  /* Edit & Delete Buttons */
-  .edit-btn { font-size: 14px; color: var(--color-text-secondary); cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; text-underline-offset: 4px; margin-left: auto; font-weight: 500; font-family: inherit; transition: color 0.2s; }
-  .edit-btn:hover { color: var(--color-primary-navy); }
-  .delete-btn { font-size: 14px; color: #DC2626; cursor: pointer; background: none; border: none; padding: 0; text-decoration: underline; text-underline-offset: 4px; font-weight: 500; font-family: inherit; }
+  .avatar-stack { display: flex; align-items: center; }
+  .avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--color-mid-gray); border: 2px solid var(--color-white); display: flex; align-items: center; justify-content: center; color: var(--color-white); font-size: 10px; font-weight: 700; margin-left: -8px; }
+  .avatar:first-child { margin-left: 0; }
+  .avatar.more { background: var(--color-light-gray); color: var(--color-text-secondary); border-color: var(--color-white); }
 
-  .empty { text-align: center; padding: var(--space-3xl) var(--space-md); color: var(--color-text-secondary); font-size: 16px; background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border-subtle); }
+  .edit-btn, .delete-btn { font-size: 14px; cursor: pointer; background: none; border: none; padding: 6px 12px; border-radius: var(--radius-sm); font-weight: 500; font-family: inherit; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+  .edit-btn { color: var(--color-text-secondary); margin-left: auto; }
+  .edit-btn:hover { background: var(--color-off-white); color: var(--color-text-primary); }
+  .delete-btn { color: #DC2626; }
+  .delete-btn:hover { background: #FEE2E2; }
+
+  /* Hall of Fame Grid */
+  .hof-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--space-lg); margin-top: var(--space-md); }
+  .hof-card { background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border-subtle); padding: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-sm); transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; box-shadow: var(--shadow-soft); }
+  .hof-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(15,47,95,0.08); border-color: var(--color-primary-navy); }
+  .hof-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--color-primary-navy); opacity: 0; transition: opacity 0.2s; }
+  .hof-card.status-production::before { opacity: 1; background: #059669; }
+  .hof-card.status-evaluated::before { opacity: 1; background: #C2410C; }
+  .hof-status { margin-bottom: var(--space-xs); display: flex; }
+  .hof-title { font-size: 18px; font-weight: 700; color: var(--color-primary-navy); line-height: 1.3; }
+  .hof-desc { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; flex: 1; margin-bottom: var(--space-md); }
+  .hof-footer { margin-top: auto; padding-top: var(--space-md); border-top: 1px solid var(--color-light-gray); display: flex; flex-direction: column; gap: var(--space-sm); }
+  .hof-owner { font-size: 13px; font-weight: 600; color: var(--color-text-primary); display: flex; align-items: center; gap: 8px; }
+  .hof-meta { font-size: 12px; color: var(--color-mid-gray); display: flex; justify-content: space-between; }
+
+  .empty { text-align: center; padding: var(--space-3xl) var(--space-md); color: var(--color-text-secondary); background: var(--color-white); border-radius: var(--radius-lg); border: 1px dashed var(--color-mid-gray); display: flex; flex-direction: column; align-items: center; gap: var(--space-md); }
+  .empty svg { width: 48px; height: 48px; color: var(--color-mid-gray); opacity: 0.5; }
+  .empty p { font-size: 16px; font-weight: 500; }
 
   /* Form */
-  .form-card { background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border-subtle); padding: var(--space-xl); box-shadow: var(--shadow-soft); }
-  .form-section-title { font-size: 16px; font-weight: 700; color: var(--color-primary-navy); margin-bottom: var(--space-lg); padding-bottom: var(--space-sm); border-bottom: 2px solid var(--color-light-gray); display: block; }
+  .form-card { background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border-subtle); padding: var(--space-xl); box-shadow: var(--shadow-soft); margin-bottom: var(--space-lg); }
+  .form-section-title { font-size: 18px; font-weight: 700; color: var(--color-primary-navy); margin-bottom: var(--space-lg); display: flex; align-items: center; gap: 8px; }
   .form-row { margin-bottom: var(--space-lg); }
   .form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); }
   .form-label { font-size: 14px; color: var(--color-text-primary); margin-bottom: var(--space-sm); display: block; font-weight: 600; }
   .form-hint { font-size: 12px; color: var(--color-text-secondary); margin-top: 6px; line-height: 1.5; }
   .form-required { color: #DC2626; }
 
-  input[type=text], input[type=password], select, textarea { width: 100%; font-size: 16px; padding: 14px 16px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); color: var(--color-text-primary); background: var(--color-white); outline: none; transition: border-color 0.2s; font-family: inherit; }
-  input[type=text]:focus, input[type=password]:focus, select:focus, textarea:focus { border-color: var(--color-primary-navy); box-shadow: 0 0 0 1px var(--color-primary-navy); }
+  input[type=text], input[type=password], select, textarea { width: 100%; font-size: 16px; padding: 14px 16px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); color: var(--color-text-primary); background: var(--color-off-white); outline: none; transition: all 0.2s; font-family: inherit; }
+  input[type=text]:focus, input[type=password]:focus, select:focus, textarea:focus { border-color: var(--color-primary-navy); background: var(--color-white); box-shadow: 0 0 0 1px var(--color-primary-navy); }
   textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
   
   .char-count { font-size: 12px; color: var(--color-mid-gray); text-align: right; margin-top: 4px; }
   
-  .submit-btn { background: var(--color-primary-navy); color: var(--color-white); border: none; border-radius: var(--radius-md); padding: 14px 22px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-top: var(--space-md); transition: background 0.2s; font-family: inherit; }
+  .submit-btn { background: var(--color-primary-navy); color: var(--color-white); border: none; border-radius: var(--radius-md); padding: 16px 24px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; font-family: inherit; box-shadow: var(--shadow-soft); }
   .submit-btn:hover { background: var(--color-primary-navy-hover); }
   .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
   /* Alerts */
-  .alert { border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); font-size: 14px; display: none; line-height: 1.6; font-weight: 500; }
+  .alert { border-radius: var(--radius-md); padding: var(--space-md); margin-bottom: var(--space-lg); font-size: 14px; display: none; line-height: 1.6; font-weight: 500; display: flex; align-items: center; gap: 12px; }
+  .alert svg { width: 20px; height: 20px; flex-shrink: 0; }
   .alert-success { background: #E6F4EA; border: 1px solid #CEEAD6; color: #1E4620; }
   .alert-error { background: #FEE2E2; border: 1px solid #FECACA; color: #DC2626; }
   
-  .rank { font-size: 14px; color: var(--color-mid-gray); font-weight: 700; min-width: 24px; }
-
   /* Login Screen */
   .login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--color-primary-navy); display: flex; align-items: center; justify-content: center; z-index: 9999; flex-direction: column; padding: var(--space-lg); text-align: center; }
-  .login-box { background: var(--color-white); padding: var(--space-xl); border-radius: var(--radius-lg); max-width: 440px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+  .login-box { background: var(--color-white); padding: var(--space-2xl); border-radius: var(--radius-lg); max-width: 440px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
   .login-box h2 { color: var(--color-primary-navy); margin-bottom: var(--space-sm); font-size: 24px; }
   .login-box p { color: var(--color-text-secondary); font-size: 16px; margin-bottom: var(--space-lg); line-height: 1.6; }
   .login-input { text-align: center; margin-bottom: var(--space-lg); }
@@ -167,10 +206,17 @@
     .form-2col { grid-template-columns: 1fr; }
     .hdr { padding: var(--space-md); }
     .container { padding: var(--space-md); }
-    .idea-who { width: 100%; margin-left: 0; margin-top: var(--space-md); justify-content: space-between; }
+    .idea-who { width: 100%; margin-left: 0; margin-top: var(--space-sm); justify-content: space-between; border-top: 1px solid var(--color-border-subtle); padding-top: var(--space-sm); }
     .controls-wrap { width: 100%; justify-content: space-between; }
-    .search-input { width: 100%; }
+    .control-group { width: 100%; }
+    .control-group select { flex: 1; }
     .action-buttons { flex-wrap: wrap; }
+    .admin-owner-input { margin-left: 0; margin-top: var(--space-sm); width: 100%; }
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .nav-header { flex-direction: column; align-items: stretch; }
+    .tabs { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+    .tab { justify-content: center; }
+    .nav-submit-btn { width: 100%; justify-content: center; }
   }
 </style>
 </head>
@@ -194,7 +240,7 @@
     <p>Please enter the team password to access the board.</p>
     <input type="password" id="secret-password" class="login-input" placeholder="Enter password" onkeydown="if(event.key === 'Enter') checkPassword()">
     <button class="submit-btn" style="margin-top:0" onclick="checkPassword()">Enter Tracker</button>
-    <div id="login-error" style="color:#e24b4a; font-size:12px; margin-top:10px; display:none;">Incorrect password. Try again.</div>
+    <div id="login-error" style="color:#e24b4a; font-size:14px; margin-top:16px; display:none; font-weight:500;">Incorrect password. Try again.</div>
   </div>
 </div>
 
@@ -228,22 +274,45 @@
     <div class="stat"><div class="stat-n">0</div><div class="stat-l">Target groups</div></div>
   </div>
   
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('board')">Idea board</button>
-    <button class="tab" onclick="openSubmitTab()">Submit an idea</button>
+  <!-- UX Navigation Upgrade -->
+  <div class="nav-header">
+    <div class="tabs">
+      <button class="tab active" data-tab="board" onclick="switchTab('board')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        Idea board
+      </button>
+      <button class="tab" data-tab="halloffame" onclick="switchTab('halloffame')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        Hall of Fame
+      </button>
+    </div>
+    <button class="nav-submit-btn" onclick="openSubmitTab()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      Submit new idea
+    </button>
   </div>
   
   <div id="tab-board">
     <div class="toolbar">
-      <div class="filter-row" id="filterRow"></div>
-      <div class="controls-wrap">
+      <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
         <input type="text" id="searchInput" class="search-input" placeholder="Search ideas..." oninput="setSearch(this.value)">
-        <div class="sort-wrap">
+      </div>
+      
+      <div class="controls-wrap">
+        <div class="control-group">
+          <label>Target Group</label>
+          <select id="filterSelect" onchange="setFilter(this.value)">
+            <option value="All">All Groups</option>
+            <!-- Generated dynamically -->
+          </select>
+        </div>
+        <div class="control-group">
           <label>Sort by</label>
           <select id="sortSelect" onchange="renderBoard()">
             <option value="votes">Top voted</option>
             <option value="newest">Newest first</option>
-            <option value="dept">By target group</option>
+            <option value="dept">A-Z Group</option>
           </select>
         </div>
       </div>
@@ -254,16 +323,23 @@
   </div>
 
   <div id="tab-submit" style="display:none">
-    <div class="alert alert-success" id="successAlert">Your idea has been submitted! Head to the board to see it and collect votes.</div>
-    <div class="alert alert-error" id="errorAlert"></div>
+    <div class="alert alert-success" id="successAlert" style="display:none;">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <span id="successMsg">Your idea has been submitted!</span>
+    </div>
+    <div class="alert alert-error" id="errorAlert" style="display:none;">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <span id="errorMsg"></span>
+    </div>
+
     <div class="form-card">
-      <div class="form-section-title">About you</div>
-      <div class="form-2col" style="margin-bottom:1rem">
-        <div class="form-row" style="margin-bottom:0">
+      <div class="form-section-title">👤 About you</div>
+      <div class="form-2col" style="margin-bottom:0">
+        <div class="form-row">
           <label class="form-label">Your name <span class="form-required">*</span></label>
           <input type="text" id="f-name" placeholder="e.g. Marsel Verheijde" maxlength="60">
         </div>
-        <div class="form-row" style="margin-bottom:0">
+        <div class="form-row">
           <label class="form-label">Target beneficiary <span class="form-required">*</span></label>
           <select id="f-dept">
             <option value="">Select who benefits most...</option>
@@ -279,7 +355,10 @@
           </select>
         </div>
       </div>
-      <div class="form-section-title" style="margin-top:1.25rem">Your idea</div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-section-title">💡 The Idea</div>
       <div class="form-row">
         <label class="form-label">Idea title <span class="form-required">*</span></label>
         <input type="text" id="f-title" placeholder="e.g. Auto-draft CRM follow-up emails" maxlength="80" oninput="countChars('f-title','tc-title',80)">
@@ -293,7 +372,7 @@
       </div>
       <div class="form-row">
         <label class="form-label">Why it matters</label>
-        <textarea id="f-why" placeholder="What would change if this existed? Time saved, fewer errors, better quality — be specific if you can." style="min-height:64px" maxlength="300" oninput="countChars('f-why','tc-why',300)"></textarea>
+        <textarea id="f-why" placeholder="What would change if this existed? Time saved, fewer errors, better quality — be specific if you can." style="min-height:80px" maxlength="300" oninput="countChars('f-why','tc-why',300)"></textarea>
         <div class="char-count" id="tc-why">0 / 300</div>
       </div>
       <div class="form-row">
@@ -304,11 +383,34 @@
       <div class="form-row">
         <label class="form-label">Which hackathon edition?</label>
         <select id="f-edition">
-          <option>Hackathon #1</option><option>Hackathon #2</option>
-          <option>Hackathon #3</option><option>Any edition</option>
+          <!-- Removed Hackathon #1 as requested -->
+          <option>Hackathon #2</option>
+          <option>Hackathon #3</option>
+          <option>Any edition</option>
         </select>
       </div>
-      <button class="submit-btn" id="submitBtn" onclick="submitIdea()">Submit my idea</button>
+    </div>
+
+    <div class="form-card" style="margin-bottom:0">
+      <div class="form-section-title">⚙️ Technical Scoping (Pre-Event)</div>
+      <div class="form-row">
+        <label class="form-label">Data Requirements</label>
+        <textarea id="f-data" placeholder="What data does this need? (e.g., Export of 5,000 anonymized support tickets)" style="min-height:80px" maxlength="300" oninput="countChars('f-data','tc-data',300)"></textarea>
+        <div class="char-count" id="tc-data">0 / 300</div>
+        <div class="form-hint">Helps IT/Data teams prepare datasets for you before the event starts.</div>
+      </div>
+      <div class="form-row" style="margin-bottom: 0;">
+        <label class="form-label">Tooling / Access Needs</label>
+        <input type="text" id="f-tooling" placeholder="e.g., OpenAI API, Jira Sandbox, AWS" maxlength="160">
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" onclick="submitIdea()">Submit my idea</button>
+  </div>
+
+  <div id="tab-halloffame" style="display:none">
+    <div id="hofList">
+      <div class="empty">Loading Hall of Fame...</div>
     </div>
   </div>
 </div>
@@ -320,9 +422,6 @@
   import { getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, increment, deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
   import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-  // =====================================================================
-  // 🔴 YOUR LIVE FIREBASE CONFIGURATION:
-  // =====================================================================
   const firebaseConfig = {
     apiKey: "AIzaSyBTtHAUXZOzrf_O6Gi2hGbqlvWRX2EyPVo",
     authDomain: "ai-hackathon-pizza.firebaseapp.com",
@@ -333,29 +432,24 @@
     measurementId: "G-2HMQP69E82"
   };
   
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // App State & Admin Flag
   let ideas = [];
   let myVotes = JSON.parse(localStorage.getItem('bimcollab_my_votes') || '{}');
   let activeFilter = "All";
   let searchQuery = "";
   let expandedIds = new Set();
-  let editingIdeaId = null; // Tracks if the user is currently editing an idea
+  let editingIdeaId = null; 
   
-  // Admin Mode: check if ?admin=true is in the URL
   const urlParams = new URLSearchParams(window.location.search);
   const isAdmin = urlParams.get('admin') === 'true';
 
-  // Improvement 1: Auto-remember User Details
   const savedUser = JSON.parse(localStorage.getItem('bimcollab_user') || '{}');
   if (savedUser.name) document.getElementById('f-name').value = savedUser.name;
   if (savedUser.dept) document.getElementById('f-dept').value = savedUser.dept;
 
-  // SHARED TEAM PASSWORD
   const TEAM_PASSWORD = "pizza"; 
 
   // --- LOGIN LOGIC ---
@@ -387,7 +481,11 @@
           ...doc.data()
         }));
         updateStats();
+        updateFilterOptions();
         window.renderBoard();
+        if (document.getElementById('tab-halloffame').style.display === 'block') {
+            window.renderHallOfFame();
+        }
       }, (error) => {
         console.error("Firestore error:", error);
         showAlert('errorAlert', 'Could not connect to database.');
@@ -411,7 +509,6 @@
     return `${days}d ago`;
   }
 
-  // Edit logic
   window.openSubmitTab = function() {
     window.clearForm();
     window.switchTab('submit');
@@ -419,14 +516,17 @@
 
   window.clearForm = function() {
     editingIdeaId = null;
-    ['f-title','f-problem','f-why','f-prototype'].forEach(id => document.getElementById(id).value = '');
-    ['tc-title','tc-problem','tc-why','tc-proto'].forEach(id => {
+    ['f-title','f-problem','f-why','f-prototype','f-data','f-tooling'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    ['tc-title','tc-problem','tc-why','tc-proto','tc-data'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.textContent = '0 / ' + el.textContent.split('/')[1].trim();
     });
     document.getElementById('submitBtn').textContent = "Submit my idea";
     const sectionTitles = document.querySelectorAll('.form-section-title');
-    if (sectionTitles.length > 1) sectionTitles[1].textContent = "Your idea";
+    if (sectionTitles.length > 1) sectionTitles[1].innerHTML = "💡 The Idea";
   }
 
   window.editIdea = function(id) {
@@ -440,16 +540,19 @@
     document.getElementById('f-why').value = idea.why || '';
     document.getElementById('f-prototype').value = idea.prototype || '';
     document.getElementById('f-edition').value = idea.edition || 'Any edition';
+    document.getElementById('f-data').value = idea.dataReq || '';
+    document.getElementById('f-tooling').value = idea.tooling || '';
 
     window.countChars('f-title', 'tc-title', 80);
     window.countChars('f-problem', 'tc-problem', 400);
     window.countChars('f-why', 'tc-why', 300);
     window.countChars('f-prototype', 'tc-proto', 160);
+    window.countChars('f-data', 'tc-data', 300);
 
     editingIdeaId = id;
     document.getElementById('submitBtn').textContent = "Save Changes";
     const sectionTitles = document.querySelectorAll('.form-section-title');
-    if (sectionTitles.length > 1) sectionTitles[1].textContent = "Edit your idea";
+    if (sectionTitles.length > 1) sectionTitles[1].innerHTML = "✏️ Edit your idea";
     
     window.switchTab('submit');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -463,6 +566,8 @@
     const why       = document.getElementById('f-why').value.trim();
     const prototype = document.getElementById('f-prototype').value.trim();
     const edition   = document.getElementById('f-edition').value;
+    const dataReq   = document.getElementById('f-data').value.trim();
+    const tooling   = document.getElementById('f-tooling').value.trim();
 
     if (!name)    { showAlert('errorAlert','Please enter your name.'); return; }
     if (!dept)    { showAlert('errorAlert','Please select a target beneficiary.'); return; }
@@ -478,25 +583,25 @@
     try {
       if (editingIdeaId) {
         await updateDoc(doc(db, "ideas", editingIdeaId), {
-          name, dept, edition, title, problem, why, prototype
+          name, dept, edition, title, problem, why, prototype, dataReq, tooling
         });
         showAlert('successAlert', 'Your idea has been updated successfully!');
       } else {
         await addDoc(collection(db, "ideas"), {
-          name, dept, edition, title, problem, why, prototype,
+          name, dept, edition, title, problem, why, prototype, dataReq, tooling,
           authorUid: auth.currentUser.uid,
           joinedUsers: [],
           netVotes: 0, 
           status: 'new', 
           ts: Date.now()
         });
-        showAlert('successAlert', 'Your idea has been submitted! Head to the board to see it and collect votes.');
+        showAlert('successAlert', 'Your idea has been submitted! Head to the board.');
       }
 
       setTimeout(() => {
         window.clearForm();
         window.switchTab('board');
-      }, 1200);
+      }, 1500);
     } catch (e) {
       console.error(e);
       showAlert('errorAlert', 'Failed to save idea. Please try again.');
@@ -507,7 +612,8 @@
   }
 
   // Vote Update
-  window.castVote = async function(id, dir) {
+  window.castVote = async function(id, dir, event) {
+    if (event) event.stopPropagation(); // Prevent card expansion when voting
     const currentVote = myVotes[id] || null;
     let voteChange = 0;
 
@@ -528,7 +634,6 @@
     } catch(e) { console.error("Vote update failed:", e); }
   }
 
-  // Improvement 5: Join Team
   window.toggleJoin = async function(id) {
     const idea = ideas.find(i => i.id === id);
     if (!idea || !auth.currentUser) return;
@@ -544,7 +649,6 @@
     } catch (e) { console.error("Failed to toggle join", e); }
   }
 
-  // Improvement 6: Delete Own Ideas
   window.deleteIdea = async function(id) {
     if (confirm("Are you sure you want to delete this idea? This cannot be undone.")) {
       try {
@@ -553,14 +657,17 @@
     }
   }
 
-  // Improvement 4: Admin update status
   window.updateStatus = async function(id, newStatus) {
     try {
       await updateDoc(doc(db, "ideas", id), { status: newStatus });
     } catch(e) { console.error("Failed to update status", e); }
   }
 
-  // --- UI Functions ---
+  window.updateOwner = async function(id, ownerName) {
+    try {
+      await updateDoc(doc(db, "ideas", id), { owner: ownerName });
+    } catch(e) { console.error("Failed to assign owner", e); }
+  }
 
   function updateStats() {
     const total = ideas.length;
@@ -572,17 +679,89 @@
       <div class="stat"><div class="stat-n">${depts}</div><div class="stat-l">Target groups</div></div>`;
   }
 
+  function updateFilterOptions() {
+    const depts = ["All", ...new Set(ideas.map(i => i.dept))].sort();
+    const select = document.getElementById('filterSelect');
+    if (!select) return;
+    
+    const currentVal = select.value;
+    select.innerHTML = depts.map(d => `<option value="${d}">${d === 'All' ? 'All Groups' : d}</option>`).join('');
+    if (depts.includes(currentVal)) select.value = currentVal;
+  }
+
   window.setSearch = function(val) {
     searchQuery = val.toLowerCase();
     window.renderBoard();
   }
+  
+  window.setFilter = function(val) {
+    activeFilter = val;
+    window.renderBoard();
+  }
 
+  window.toggleExpand = function(id) {
+    if (expandedIds.has(id)) expandedIds.delete(id);
+    else expandedIds.add(id);
+    window.renderBoard();
+  }
+  
+  window.switchTab = function(t) {
+    document.querySelectorAll('.tab').forEach((b) => {
+       if(b.dataset.tab) {
+         b.classList.toggle('active', b.dataset.tab === t);
+       } else {
+         b.classList.remove('active');
+       }
+    });
+    document.getElementById('tab-board').style.display   = t === 'board'  ? 'block' : 'none';
+    document.getElementById('tab-submit').style.display  = t === 'submit' ? 'block' : 'none';
+    document.getElementById('tab-halloffame').style.display  = t === 'halloffame' ? 'block' : 'none';
+    if (t === 'board') window.renderBoard();
+    if (t === 'halloffame') window.renderHallOfFame();
+  }
+
+  // --- Hall of Fame Rendering ---
+  window.renderHallOfFame = function() {
+    const el = document.getElementById('hofList');
+    
+    const hofIdeas = ideas.filter(i => ['selected', 'built', 'evaluated', 'production'].includes(i.status));
+
+    const statusWeight = { 'production': 4, 'evaluated': 3, 'built': 2, 'selected': 1 };
+    hofIdeas.sort((a,b) => (statusWeight[b.status] || 0) - (statusWeight[a.status] || 0) || b.ts - a.ts);
+
+    if (!hofIdeas.length) {
+       el.innerHTML = `
+        <div class="empty">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+          <p>No ideas have been selected for the Hall of Fame yet!</p>
+        </div>`;
+       return;
+    }
+
+    el.innerHTML = `
+       <div class="hof-grid">
+         ${hofIdeas.map(idea => `
+           <div class="hof-card status-${idea.status}">
+             <div class="hof-status">${statusPill(idea.status)}</div>
+             <h3 class="hof-title">${idea.title}</h3>
+             <div class="hof-desc">${idea.problem.substring(0, 140)}${idea.problem.length > 140 ? '...' : ''}</div>
+             <div class="hof-footer">
+               <div class="hof-owner">
+                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                 ${idea.owner ? `Owner: ${idea.owner}` : `By: ${idea.name}`}
+               </div>
+               <div class="hof-meta">
+                 <span>${idea.dept}</span>
+               </div>
+             </div>
+           </div>
+         `).join('')}
+       </div>
+    `;
+  }
+
+  // --- Main Board Rendering ---
   window.renderBoard = function() {
-    const depts = ["All", ...new Set(ideas.map(i => i.dept))];
-    document.getElementById('filterRow').innerHTML = depts.map(d =>
-      `<button class="filter-btn${d === activeFilter ? ' active' : ''}" onclick="setFilter('${d}')">${d}</button>`
-    ).join('');
-
     const sort = document.getElementById('sortSelect').value;
     
     let list = [...ideas].filter(i => {
@@ -601,7 +780,11 @@
     const el = document.getElementById('ideaList');
 
     if (!list.length) {
-      el.innerHTML = `<div class="empty">${searchQuery ? "No ideas match your search." : "No ideas here yet — be the first to submit one!"}</div>`;
+      el.innerHTML = `
+        <div class="empty">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+          <p>${searchQuery ? "No ideas match your search." : "No ideas here yet — be the first to submit one!"}</p>
+        </div>`;
       return;
     }
 
@@ -613,56 +796,103 @@
       const myVote = myVotes[idea.id] || null;
       const countClass = net > 0 ? 'positive' : net < 0 ? 'negative' : 'zero';
       const expanded = expandedIds.has(idea.id);
-      const hasExtra = idea.why || idea.prototype;
+      const hasExtra = idea.why || idea.prototype || idea.dataReq || idea.tooling;
       
       const isOwner = currentUid && idea.authorUid === currentUid;
+      const isPostMVP = ['evaluated', 'production'].includes(idea.status);
       
       const joinedList = idea.joinedUsers || [];
       const joinCount = joinedList.length;
       const iHaveJoined = currentUid && joinedList.includes(currentUid);
 
+      let teamHtml = '';
+      if (joinCount > 0) {
+        teamHtml = `<div class="avatar-stack">`;
+        const displayLimit = 3;
+        for (let i = 0; i < Math.min(joinCount, displayLimit); i++) {
+          teamHtml += `<div class="avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>`;
+        }
+        if (joinCount > displayLimit) {
+          teamHtml += `<div class="avatar more">+${joinCount - displayLimit}</div>`;
+        }
+        teamHtml += `</div>`;
+      }
+
+      let ownerDisplay = '';
+      if (idea.owner) {
+        ownerDisplay = `<div class="owner-badge">👤 Owner: ${idea.owner}</div>`;
+      }
+      
+      let adminOwnerHtml = '';
+      if (isAdmin && isPostMVP) {
+         adminOwnerHtml = `<input type="text" class="admin-owner-input" placeholder="Assign Owner..." value="${idea.owner || ''}" onchange="updateOwner('${idea.id}', this.value)">`;
+      }
+
       return `<div class="idea-card${isTop ? ' top-card' : ''}" id="card-${idea.id}">
         <div class="vote-col">
-          <button class="vote-btn up${myVote === 'up' ? ' active' : ''}" onclick="castVote('${idea.id}','up')" title="Upvote">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L12 9H2L7 2Z" fill="${myVote === 'up' ? '#FFFFFF' : '#A7AFBA'}"/></svg>
+          <button class="vote-btn up${myVote === 'up' ? ' active' : ''}" ${isPostMVP ? 'disabled' : ''} onclick="castVote('${idea.id}','up', event)" title="Upvote">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
           </button>
           <div class="vote-count ${countClass}">${net > 0 ? '+' : ''}${net}</div>
-          <button class="vote-btn down${myVote === 'down' ? ' active' : ''}" onclick="castVote('${idea.id}','down')" title="Downvote">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12L2 5H12L7 12Z" fill="${myVote === 'down' ? '#DC2626' : '#A7AFBA'}"/></svg>
+          <button class="vote-btn down${myVote === 'down' ? ' active' : ''}" ${isPostMVP ? 'disabled' : ''} onclick="castVote('${idea.id}','down', event)" title="Downvote">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
         </div>
         <div class="idea-body">
-          <div class="idea-title-row">
-            ${sort === 'votes' ? `<span class="rank">#${idx+1}</span>` : ''}
-            <span class="idea-title">${idea.title}</span>
-            ${isTop ? '<span class="top-badge">Top idea</span>' : ''}
+          <div class="idea-title-row" onclick="${hasExtra ? `toggleExpand('${idea.id}')` : ''}">
+            <div class="title-left">
+              ${sort === 'votes' ? `<span class="rank">#${idx+1}</span>` : ''}
+              <span class="idea-title">${idea.title}</span>
+              ${isTop ? '<span class="top-badge">Top idea</span>' : ''}
+            </div>
+            ${hasExtra ? `
+              <div class="expand-chevron ${expanded ? 'open' : ''}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+            ` : ''}
           </div>
           <div class="idea-problem">${idea.problem}</div>
           
+          ${hasExtra ? `
+          <div class="extra-info${expanded ? ' open' : ''}">
+            ${idea.why ? `<div class="idea-why"><strong>Why it matters</strong>${idea.why}</div>` : ''}
+            ${idea.prototype ? `<div class="info-group"><strong>What a good prototype looks like</strong>${idea.prototype}</div>` : ''}
+            ${idea.dataReq ? `<div class="info-group"><strong>Data Requirements</strong>${idea.dataReq}</div>` : ''}
+            ${idea.tooling ? `<div class="info-group"><strong>Tooling / Access Needs</strong>${idea.tooling}</div>` : ''}
+          </div>` : ''}
+          
           <div class="action-buttons">
-            ${hasExtra ? `<button class="expand-btn" onclick="toggleExpand('${idea.id}')">${expanded ? 'Show less' : 'Read more'}</button>` : ''}
-            <button class="join-btn ${iHaveJoined ? 'joined' : ''}" onclick="toggleJoin('${idea.id}')">
-              🤝 ${iHaveJoined ? 'Joined' : 'Join team'} ${joinCount > 0 ? `(${joinCount})` : ''}
-            </button>
-            ${isOwner ? `
-              <button class="edit-btn" onclick="editIdea('${idea.id}')">Edit</button>
-              <button class="delete-btn" onclick="deleteIdea('${idea.id}')">Delete</button>
+            ${!isPostMVP ? `
+              <button class="join-btn ${iHaveJoined ? 'joined' : ''}" onclick="toggleJoin('${idea.id}')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                ${iHaveJoined ? 'Joined' : 'Join team'}
+              </button>
+              ${teamHtml}
+            ` : ownerDisplay}
+            
+            ${adminOwnerHtml}
+
+            ${isOwner && !isPostMVP ? `
+              <button class="edit-btn" onclick="editIdea('${idea.id}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit
+              </button>
+              <button class="delete-btn" onclick="deleteIdea('${idea.id}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg> Delete
+              </button>
             ` : ''}
           </div>
 
-          ${hasExtra ? `
-          <div class="extra-info${expanded ? ' open' : ''}">
-            ${idea.why ? `<div class="idea-why"><strong>Why it matters:</strong><br/>${idea.why}</div>` : ''}
-            ${idea.prototype ? `<div class="idea-prototype"><strong>Prototype:</strong> ${idea.prototype}</div>` : ''}
-          </div>` : ''}
-          
           <div class="idea-meta">
-            <span class="pill pill-dept">${idea.dept}</span>
             ${isAdmin ? adminStatusDropdown(idea.id, idea.status) : statusPill(idea.status)}
-            <span class="pill pill-edition">${idea.edition}</span>
+            <span class="pill pill-dept">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+              ${idea.dept}
+            </span>
+            <span class="pill">🗓️ ${idea.edition}</span>
             <div class="idea-who">
+              <span>By ${idea.name}</span>
+              <span style="color:var(--color-border-subtle)">|</span>
               <span class="time-ago">${timeAgo(idea.ts)}</span>
-              <span>— ${idea.name}</span>
             </div>
           </div>
         </div>
@@ -671,8 +901,8 @@
   }
 
   function adminStatusDropdown(id, currentStatus) {
-    const statuses = ['new', 'selected', 'built'];
-    const labels = { 'new': 'New idea', 'selected': 'Selected', 'built': 'Built!' };
+    const statuses = ['new', 'selected', 'built', 'evaluated', 'production'];
+    const labels = { 'new': 'New idea', 'selected': 'Selected', 'built': 'Hackathon MVP', 'evaluated': 'Roadmap Evaluated', 'production': 'In Production' };
     return `<select class="admin-select" onchange="updateStatus('${id}', this.value)">
       ${statuses.map(s => `<option value="${s}" ${currentStatus === s ? 'selected' : ''}>${labels[s]}</option>`).join('')}
     </select>`;
@@ -680,22 +910,10 @@
 
   function statusPill(status) {
     if (status === 'selected') return '<span class="pill pill-selected">Selected for hackathon</span>';
-    if (status === 'built')    return '<span class="pill pill-built">Built!</span>';
+    if (status === 'built')    return '<span class="pill pill-built">Hackathon MVP</span>';
+    if (status === 'evaluated') return '<span class="pill pill-evaluated">Roadmap Evaluated</span>';
+    if (status === 'production') return '<span class="pill pill-production">In Production</span>';
     return '<span class="pill pill-new">New idea</span>';
-  }
-
-  window.setFilter = function(d) { activeFilter = d; window.renderBoard(); }
-  window.toggleExpand = function(id) {
-    if (expandedIds.has(id)) expandedIds.delete(id);
-    else expandedIds.add(id);
-    window.renderBoard();
-  }
-  
-  window.switchTab = function(t) {
-    document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('active', ['board','submit'][i] === t));
-    document.getElementById('tab-board').style.display   = t === 'board'  ? 'block' : 'none';
-    document.getElementById('tab-submit').style.display  = t === 'submit' ? 'block' : 'none';
-    if (t === 'board') window.renderBoard();
   }
 
   window.countChars = function(inputId, counterId, max) {
@@ -705,8 +923,9 @@
 
   function showAlert(id, msg) {
     const el = document.getElementById(id);
-    if (msg) el.textContent = msg;
-    el.style.display = 'block';
+    const textEl = id === 'successAlert' ? document.getElementById('successMsg') : document.getElementById('errorMsg');
+    if (msg) textEl.textContent = msg;
+    el.style.display = 'flex';
     setTimeout(() => el.style.display = 'none', 5000);
   }
 </script>
