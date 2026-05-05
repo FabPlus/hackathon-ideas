@@ -765,11 +765,14 @@
     const sort = document.getElementById('sortSelect').value;
     
     let list = [...ideas].filter(i => {
+      // Option 1 Logic: Only show ideas that are 'new' (or lack a status if they are older submissions)
+      const isNew = !i.status || i.status === 'new';
+      
       const matchDept = activeFilter === 'All' || i.dept === activeFilter;
       const matchSearch = !searchQuery || 
                           i.title.toLowerCase().includes(searchQuery) || 
                           i.problem.toLowerCase().includes(searchQuery);
-      return matchDept && matchSearch;
+      return isNew && matchDept && matchSearch;
     });
 
     if (sort === 'votes')   list.sort((a,b) => (b.netVotes||0) - (a.netVotes||0));
